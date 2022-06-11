@@ -1,0 +1,10 @@
+version: '3'
+services:
+  app:
+    build: ./simple_blog
+    command: bash -c "rm -f tmp/pids/server.pid && rails server -p 3000 -b 0.0.0.0"
+    volumes:
+      - ./simple_blog:/app/simple_blog
+    ports:
+      - 3000:3000
+    tty: true
