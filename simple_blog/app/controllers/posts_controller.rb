@@ -1,5 +1,6 @@
 class PostsController < ApplicationController
     skip_before_action :verify_authenticity_token
+
     def index
         @posts = Post.all
     end
@@ -23,6 +24,31 @@ class PostsController < ApplicationController
             end
         end
     end
+
+    def edit
+        @post = Post.find(params[:id])
+    end
+
+    def update
+        respond_to do |f|
+            if @post.update(post_params)
+                f.html {redirect_to @post, notice: "Entry was successfully updated."}
+            else
+                f.html { render :new, status: :unprocessable_entity }
+                f.json { render json: @post.errors, status: :unprocessable_entity }
+            end
+        end
+    end
+
+    def destroy
+        @post = Post.find(params[:id])
+        @post.destroy
+        respond_to do |f|
+            f.html {redirect_to @post, notice: "Entry was successfully deleted." }
+            f.json { head :no_content }
+        end
+    end
+
 
     private
     def post_params
